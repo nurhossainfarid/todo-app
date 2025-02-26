@@ -11,11 +11,8 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'todo',
-    loadComponent: () => import('./pages/todo/todo.page').then( m => m.TodoPage)
-  },
-  {
     path: 'details',
-    loadComponent: () => import('./pages/details/details.page').then( m => m.DetailsPage)
+    loadComponent: () =>
+      import('./pages/details/details.page').then((m) => m.DetailsPage),
   },
 ];
