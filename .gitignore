@@ -9,6 +9,12 @@
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
 
+# Ignore environment files
+.env
+# src/environments/environment.ts
+# src/environments/environment.prod.ts
+
+
 *.log
 log.txt
 
