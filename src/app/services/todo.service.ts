@@ -40,7 +40,15 @@ export class TodoService {
 
   // update todo
   updateTodo(todo: ITodo): Observable<ITodo> {
-    return this.http.put<ITodo>(`${this.todoUrl}/${todo.id}`, todo);
+    return this.http.put<ITodo>(`${this.todoUrl}/${todo.id}`, todo).pipe(
+      tap((updatedMovie) => {
+        this.todoListSignal.update((todos) =>
+          todos.map((todo) =>
+            todo.id === updatedMovie.id ? updatedMovie : todo
+          )
+        );
+      })
+    );
   }
 
   // toggle todo status

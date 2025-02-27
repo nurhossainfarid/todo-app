@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>details</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{todoData?.title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,4 +13,13 @@
       <ion-title size="large">details</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-card class="ion-padding">
+    <ion-card-header class="ion-text-start">
+      <ion-card-subtitle>
+        {{ todoData?.completed ? 'Completed' : 'Pending' }}
+      </ion-card-subtitle>
+      <ion-card-title>Title: {{todoData?.title}}</ion-card-title>
+      <ion-card-title>User Id: {{todoData?.userId}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>

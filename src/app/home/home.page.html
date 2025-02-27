@@ -7,11 +7,10 @@
 <ion-content class="i-padding-top" [fullscreen]="true">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Task Form</ion-card-title>
+      <ion-card-title>Add Todo</ion-card-title>
     </ion-card-header>
-
     <ion-card-content>
-      <form [formGroup]="addTodoForm">
+      <form [formGroup]="todoForm">
         <ion-item>
           <ion-label position="floating">Title</ion-label>
           <ion-input formControlName="title"></ion-input>
@@ -31,7 +30,7 @@
           expand="full"
           (click)="addTodo()"
           type="submit"
-          [disabled]="addTodoForm.invalid"
+          [disabled]="todoForm.invalid"
           >Submit</ion-button
         >
       </form>
@@ -51,7 +50,53 @@
               <ion-card-title>{{ todo.title }}</ion-card-title>
             </ion-card-header>
 
-            <ion-button fill="clear">Update</ion-button>
+            <ion-button fill="clear" [routerLink]="['/details', todo.id]"
+              >Details</ion-button
+            >
+            <ion-button
+              fill="clear"
+              id="{{todo.id}}"
+              (click)="getTodoDetails(todo.id)"
+              >Update</ion-button
+            >
+            <ion-modal trigger="{{todo.id}}">
+              <ng-template>
+                <ion-card>
+                  <ion-card-header>
+                    <ion-button (click)="cancel()">Cancel</ion-button>
+                    <ion-card-title>Update Todo</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                    <form [formGroup]="todoForm">
+                      <ion-item>
+                        <ion-label position="floating">Title</ion-label>
+                        <ion-input
+                          formControlName="title"
+                          value="{{todoData?.title}}"
+                        ></ion-input>
+                      </ion-item>
+
+                      <ion-item>
+                        <ion-label position="floating">User ID</ion-label>
+                        <ion-input
+                          type="number"
+                          formControlName="userId"
+                          value="{{todoData?.userId}}"
+                        ></ion-input>
+                      </ion-item>
+
+                      <ion-button
+                        expand="full"
+                        (click)="updateTodo()"
+                        type="submit"
+                        [disabled]="todoForm.invalid"
+                        >Update</ion-button
+                      >
+                    </form>
+                  </ion-card-content>
+                </ion-card>
+              </ng-template>
+            </ion-modal>
             <ion-button fill="clear" (click)="deleteTodo(todo.id)"
               >Delete</ion-button
             >
