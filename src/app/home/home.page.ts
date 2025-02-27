@@ -76,7 +76,9 @@ export class HomePage {
   @ViewChild(IonModal) modal!: IonModal;
 
   cancel() {
-    this.modal.dismiss(null, 'cancel');
+    if (this.modal) {
+      this.modal.dismiss(null, 'cancel');
+    }
   }
 
   onWillDismiss(event: CustomEvent<OverlayEventDetail>) {}

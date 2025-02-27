@@ -35,7 +35,15 @@ export class TodoService {
 
   // get todo details
   getTodoDetails(id: number): Observable<ITodo> {
-    return this.http.get<ITodo>(`${this.todoUrl}/${id}`);
+    return this.http
+      .get<ITodo>(`${this.todoUrl}/${id}`)
+      .pipe(
+        tap((todo) =>
+          this.todoListSignal.update((todos) =>
+            todos.map((t) => (t.id === id ? todo : t))
+          )
+        )
+      );
   }
 
   // update todo
