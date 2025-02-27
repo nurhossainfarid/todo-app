@@ -5,10 +5,43 @@
 </ion-header>
 
 <ion-content class="i-padding-top" [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Task Form</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form [formGroup]="addTodoForm">
+        <ion-item>
+          <ion-label position="floating">Title</ion-label>
+          <ion-input formControlName="title"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">ID</ion-label>
+          <ion-input type="number" formControlName="id"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">User ID</ion-label>
+          <ion-input type="number" formControlName="userId"></ion-input>
+        </ion-item>
+
+        <ion-button
+          expand="full"
+          (click)="addTodo()"
+          type="submit"
+          [disabled]="addTodoForm.invalid"
+          >Submit</ion-button
+        >
+      </form>
+    </ion-card-content>
+  </ion-card>
+
   <div class="ion-padding">
     <ion-grid>
       <ion-row>
-        @for (todo of todos; track todo.id) {
+        @for (todo of todoList().slice(-2); track todo.id) {
         <ion-col size="4">
           <ion-card class="ion-padding">
             <ion-card-header class="ion-text-start">
@@ -23,6 +56,9 @@
           </ion-card>
         </ion-col>
         }
+        <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ion-row>
     </ion-grid>
   </div>
