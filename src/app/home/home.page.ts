@@ -1,69 +1,67 @@
-import { Component, inject, ViewChild } from '@angular/core';
 import {
-  IonList,
-  IonLabel,
-  IonToggle,
-  IonItem,
-  IonText,
-  IonInput,
   IonCol,
   IonRow,
+  IonList,
+  IonItem,
+  IonAlert,
+  IonText,
   IonCard,
   IonGrid,
+  IonLabel,
+  IonInput,
   IonTitle,
+  IonModal,
+  IonAvatar,
   IonHeader,
   IonButton,
-  IonButtons,
   IonToolbar,
-  IonCardContent,
   IonContent,
   IonCardTitle,
   IonCardHeader,
+  IonCardContent,
   IonCardSubtitle,
+  IonSkeletonText,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   InfiniteScrollCustomEvent,
-  IonModal,
 } from '@ionic/angular/standalone';
+import { nanoid } from 'nanoid';
+import { Component, inject, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { ITodo } from '../services/interface';
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
-import { ShowTodoComponent } from '../components/show-todo/show-todo.component';
-import { AddTodoComponent } from '../components/add-todo/add-todo.component';
-import { catchError, finalize } from 'rxjs';
-import { OverlayEventDetail } from '@ionic/core/components';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
-    IonList,
-    IonModal,
-    IonItem,
-    IonButtons,
-    IonLabel,
-    IonToggle,
-    IonText,
-    IonInput,
     IonCol,
     IonRow,
+    IonList,
+    IonAlert,
+    IonItem,
     IonCard,
-    RouterModule,
-    IonCardContent,
     IonGrid,
+    IonModal,
+    IonLabel,
+    IonInput,
     IonTitle,
+    IonAvatar,
     IonHeader,
     IonButton,
     IonToolbar,
     IonContent,
+    RouterModule,
     IonCardTitle,
     IonCardHeader,
+    IonCardContent,
+    IonSkeletonText,
     IonCardSubtitle,
     IonInfiniteScroll,
-    IonInfiniteScrollContent,
     ReactiveFormsModule,
+    IonInfiniteScrollContent,
   ],
 })
 export class HomePage {
@@ -72,6 +70,7 @@ export class HomePage {
   public isLoading = false;
   public todoList = this.todoService.todoList;
   public todoData: ITodo | undefined;
+  public dummyArray = new Array(3);
 
   isModalOpen = false;
 
@@ -95,7 +94,7 @@ export class HomePage {
   addTodo() {
     if (this.todoForm.valid) {
       const newTodo = {
-        id: Number(this.todoForm.value.id),
+        id: nanoid(),
         title: this.todoForm.value.title as string,
         userId: Number(this.todoForm.value.userId),
         completed: this.todoForm.value.completed as boolean,
@@ -113,7 +112,7 @@ export class HomePage {
   }
 
   // get single todo
-  getTodoDetails = (id: number) => {
+  getTodoDetails = (id: string) => {
     this.setOpen(true);
     this.todoService.getTodoDetails(id).subscribe({
       next: (data) => {
@@ -124,7 +123,7 @@ export class HomePage {
   };
 
   // Delete todo
-  deleteTodo = (id: number) => {
+  deleteTodo = (id: string) => {
     this.todoService.deleteTodo(id).subscribe();
   };
 

@@ -13,20 +13,22 @@
       <form [formGroup]="todoForm">
         <ion-item>
           <ion-label position="floating">Title</ion-label>
-          <ion-input formControlName="title"></ion-input>
+          <ion-input
+            class="ion-padding-top"
+            formControlName="title"
+          ></ion-input>
         </ion-item>
-
-        <ion-item>
-          <ion-label position="floating">ID</ion-label>
-          <ion-input type="number" formControlName="id"></ion-input>
-        </ion-item>
-
         <ion-item>
           <ion-label position="floating">User ID</ion-label>
-          <ion-input type="number" formControlName="userId"></ion-input>
+          <ion-input
+            class="ion-padding-top"
+            type="number"
+            formControlName="userId"
+          ></ion-input>
         </ion-item>
 
         <ion-button
+          class="ion-padding-top"
           expand="full"
           (click)="addTodo()"
           type="submit"
@@ -37,73 +39,99 @@
     </ion-card-content>
   </ion-card>
 
-  <div class="ion-padding">
-    <ion-grid>
-      <ion-row>
-        @for (todo of todoList().slice(-3); track todo.id) {
-        <ion-col size="4">
-          <ion-card class="ion-padding">
-            <ion-card-header class="ion-text-start">
-              <ion-card-subtitle>
-                {{ todo.completed ? 'Completed' : 'Pending' }}
-              </ion-card-subtitle>
-              <ion-card-title>{{ todo.title }}</ion-card-title>
-            </ion-card-header>
+  @defer (when !isLoading) {
+  <ion-grid>
+    <ion-row>
+      @for (todo of todoList().slice().reverse(); track todo.id) {
+      <ion-col size="4">
+        <ion-card class="ion-padding">
+          <ion-card-header class="ion-text-start">
+            <ion-card-subtitle>
+              {{ todo.completed ? 'Completed' : 'Pending' }}
+            </ion-card-subtitle>
+            <ion-card-title>{{ todo.title }}</ion-card-title>
+          </ion-card-header>
 
-            <ion-button fill="clear" [routerLink]="['/details', todo.id]"
-              >Details</ion-button
-            >
-            <ion-button fill="clear" (click)="getTodoDetails(todo.id)"
-              >Update</ion-button
-            >
-            <ion-modal [isOpen]="isModalOpen">
-              <ng-template>
-                <ion-card>
-                  <ion-card-header>
-                    <ion-title>Update Todo</ion-title>
-                    <ion-button (click)="setOpen(false)">Close</ion-button>
-                  </ion-card-header>
-                  <ion-card-content>
-                    <form [formGroup]="todoForm">
-                      <ion-item>
-                        <ion-label position="floating">Title</ion-label>
-                        <ion-input
-                          formControlName="title"
-                          value="{{todoData?.title}}"
-                        ></ion-input>
-                      </ion-item>
+          <ion-button fill="clear" [routerLink]="['/details', todo.id]"
+            >Details</ion-button
+          >
+          <ion-button fill="clear" (click)="getTodoDetails(todo.id)"
+            >Update</ion-button
+          >
+          <ion-modal [isOpen]="isModalOpen">
+            <ng-template>
+              <ion-card>
+                <ion-card-header>
+                  <ion-title>Update Todo</ion-title>
+                  <ion-button (click)="setOpen(false)">Close</ion-button>
+                </ion-card-header>
+                <ion-card-content>
+                  <form [formGroup]="todoForm">
+                    <ion-item>
+                      <ion-label position="floating">Title</ion-label>
+                      <ion-input
+                        class="ion-padding-top"
+                        formControlName="title"
+                        value="{{todoData?.title}}"
+                      ></ion-input>
+                    </ion-item>
 
-                      <ion-item>
-                        <ion-label position="floating">User ID</ion-label>
-                        <ion-input
-                          type="number"
-                          formControlName="userId"
-                          value="{{todoData?.userId}}"
-                        ></ion-input>
-                      </ion-item>
+                    <ion-item>
+                      <ion-label position="floating">User ID</ion-label>
+                      <ion-input
+                        type="number"
+                        class="ion-padding-top"
+                        formControlName="userId"
+                        value="{{todoData?.userId}}"
+                      ></ion-input>
+                    </ion-item>
 
-                      <ion-button
-                        expand="full"
-                        (click)="updateTodo()"
-                        type="submit"
-                        [disabled]="todoForm.invalid"
-                        >Update</ion-button
-                      >
-                    </form>
-                  </ion-card-content>
-                </ion-card>
-              </ng-template>
-            </ion-modal>
-            <ion-button fill="clear" (click)="deleteTodo(todo.id)"
-              >Delete</ion-button
-            >
-          </ion-card>
-        </ion-col>
-        }
-        <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-          <ion-infinite-scroll-content></ion-infinite-scroll-content>
-        </ion-infinite-scroll>
-      </ion-row>
-    </ion-grid>
-  </div>
+                    <ion-button
+                      expand="full"
+                      (click)="updateTodo()"
+                      type="submit"
+                      [disabled]="todoForm.invalid"
+                      >Update</ion-button
+                    >
+                  </form>
+                </ion-card-content>
+              </ion-card>
+            </ng-template>
+          </ion-modal>
+          <ion-button fill="clear" (click)="deleteTodo(todo.id)"
+            >Delete</ion-button
+          >
+        </ion-card>
+      </ion-col>
+      }
+      <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content
+          loadingSpinner="bubbles"
+          loadingText="Loading more data..."
+        ></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-row>
+  </ion-grid>
+  } @placeholder {
+  <ion-list class="ion-padding-top">
+    @for (i of dummyArray; track i) {
+    <ion-item lines="none" class="ion-padding-bottom">
+      <ion-avatar slot="start">
+        <ion-skeleton-text
+          animated
+          style="width: 40px; height: 40px"
+        ></ion-skeleton-text>
+      </ion-avatar>
+      <ion-skeleton-text animated style="height: 40px"></ion-skeleton-text>
+    </ion-item>
+    }
+  </ion-list>
+  } @error {
+  <ion-alert
+    header="Error"
+    [message]="error"
+    isOpen="true"
+    [buttons]="['Ok']"
+  ></ion-alert>
+  } @loading(minimum 2s) { Todos are loading... }
 </ion-content>

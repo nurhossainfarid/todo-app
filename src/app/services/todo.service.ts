@@ -1,7 +1,7 @@
+import { ITodo } from './interface';
+import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { ITodo } from './interface';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +34,7 @@ export class TodoService {
   }
 
   // get todo details
-  getTodoDetails(id: number): Observable<ITodo> {
+  getTodoDetails(id: string): Observable<ITodo> {
     return this.http
       .get<ITodo>(`${this.todoUrl}/${id}`)
       .pipe(
@@ -66,7 +66,7 @@ export class TodoService {
   }
 
   // delete todo
-  deleteTodo(id: number): Observable<void> {
+  deleteTodo(id: string): Observable<void> {
     return this.http.delete<void>(`${this.todoUrl}/${id}`).pipe(
       tap(() => {
         this.todoListSignal.update((todos) =>
