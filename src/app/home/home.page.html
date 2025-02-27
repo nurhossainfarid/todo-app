@@ -31,7 +31,7 @@
           (click)="addTodo()"
           type="submit"
           [disabled]="todoForm.invalid"
-          >Submit</ion-button
+          >Add New Todo</ion-button
         >
       </form>
     </ion-card-content>
@@ -53,18 +53,15 @@
             <ion-button fill="clear" [routerLink]="['/details', todo.id]"
               >Details</ion-button
             >
-            <ion-button
-              fill="clear"
-              id="{{todo.id}}"
-              (click)="getTodoDetails(todo.id)"
+            <ion-button fill="clear" (click)="getTodoDetails(todo.id)"
               >Update</ion-button
             >
-            <ion-modal trigger="{{todo.id}}">
+            <ion-modal [isOpen]="isModalOpen">
               <ng-template>
                 <ion-card>
                   <ion-card-header>
-                    <ion-button (click)="cancel()">Cancel</ion-button>
-                    <ion-card-title>Update Todo</ion-card-title>
+                    <ion-title>Update Todo</ion-title>
+                    <ion-button (click)="setOpen(false)">Close</ion-button>
                   </ion-card-header>
                   <ion-card-content>
                     <form [formGroup]="todoForm">

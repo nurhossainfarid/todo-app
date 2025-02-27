@@ -73,15 +73,11 @@ export class HomePage {
   public todoList = this.todoService.todoList;
   public todoData: ITodo | undefined;
 
-  @ViewChild(IonModal) modal!: IonModal;
+  isModalOpen = false;
 
-  cancel() {
-    if (this.modal) {
-      this.modal.dismiss(null, 'cancel');
-    }
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
-
-  onWillDismiss(event: CustomEvent<OverlayEventDetail>) {}
 
   todoForm = new FormGroup({
     id: new FormControl(''),
@@ -92,6 +88,7 @@ export class HomePage {
 
   constructor() {
     this.todoService.getAllTodos().subscribe();
+    console.log(this.todoList);
   }
 
   // Add new todo
@@ -117,6 +114,7 @@ export class HomePage {
 
   // get single todo
   getTodoDetails = (id: number) => {
+    this.setOpen(true);
     this.todoService.getTodoDetails(id).subscribe({
       next: (data) => {
         this.todoData = data;
@@ -144,10 +142,10 @@ export class HomePage {
         ? this.todoData?.completed
         : this.todoForm.value.completed,
     } as ITodo;
-    console.log(updateTodoData);
+
     this.todoService.updateTodo(updateTodoData).subscribe({
       next: (res) => {
-        this.modal.dismiss(null, 'close');
+        this.setOpen(false);
       },
       error: (err) => {
         console.error('Error updating todo:', err);
