@@ -52,7 +52,9 @@
             </ion-card-header>
 
             <ion-button fill="clear">Update</ion-button>
-            <ion-button fill="clear">Delete</ion-button>
+            <ion-button fill="clear" (click)="deleteTodo(todo.id)"
+              >Delete</ion-button
+            >
           </ion-card>
         </ion-col>
         }

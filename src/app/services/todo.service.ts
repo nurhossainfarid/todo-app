@@ -51,6 +51,12 @@ export class TodoService {
 
   // delete todo
   deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.todoUrl}/${id}`);
+    return this.http.delete<void>(`${this.todoUrl}/${id}`).pipe(
+      tap(() => {
+        this.todoListSignal.update((todos) =>
+          todos.filter((todo) => todo.id !== id)
+        );
+      })
+    );
   }
 }

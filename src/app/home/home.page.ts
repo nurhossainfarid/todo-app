@@ -96,6 +96,10 @@ export class HomePage {
     }
   }
 
+  deleteTodo = (id: number) => {
+    this.todoService.deleteTodo(id).subscribe();
+  };
+
   loadMore(event: InfiniteScrollCustomEvent) {
     this.todoList();
     setTimeout(() => {
