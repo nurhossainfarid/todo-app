@@ -31,6 +31,7 @@ import { RouterModule } from '@angular/router';
 import { TodoService } from '../services/todo.service';
 import { ITodo } from '../services/interface';
 import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
+import { TodoCardComponent } from '../components/todo-card/todo-card.component';
 
 @Component({
   selector: 'app-home',
@@ -59,6 +60,7 @@ import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
     IonCardContent,
     IonSkeletonText,
     IonCardSubtitle,
+    TodoCardComponent,
     IonInfiniteScroll,
     ReactiveFormsModule,
     IonInfiniteScrollContent,
@@ -69,7 +71,6 @@ export class HomePage {
   public error = null;
   public isLoading = false;
   public todoList = this.todoService.todoList;
-  public todoData: ITodo | undefined;
   public dummyArray = new Array(3);
 
   isModalOpen = false;
@@ -87,7 +88,6 @@ export class HomePage {
 
   constructor() {
     this.todoService.getAllTodos().subscribe();
-    console.log(this.todoList);
   }
 
   // Add new todo
@@ -110,47 +110,6 @@ export class HomePage {
       });
     }
   }
-
-  // get single todo
-  getTodoDetails = (id: string) => {
-    this.setOpen(true);
-    this.todoService.getTodoDetails(id).subscribe({
-      next: (data) => {
-        this.todoData = data;
-      },
-      error: (err) => console.error('Error getting todo details:', err),
-    });
-  };
-
-  // Delete todo
-  deleteTodo = (id: string) => {
-    this.todoService.deleteTodo(id).subscribe();
-  };
-
-  // Update todo
-  updateTodo = () => {
-    const updateTodoData = {
-      id: this.todoData?.id,
-      title: !this.todoForm.value.title
-        ? this.todoData?.title
-        : this.todoForm.value.title,
-      userId: !this.todoForm.value.userId
-        ? this.todoData?.userId
-        : this.todoForm.value.userId,
-      completed: !this.todoForm.value.completed
-        ? this.todoData?.completed
-        : this.todoForm.value.completed,
-    } as ITodo;
-
-    this.todoService.updateTodo(updateTodoData).subscribe({
-      next: (res) => {
-        this.setOpen(false);
-      },
-      error: (err) => {
-        console.error('Error updating todo:', err);
-      },
-    });
-  };
 
   loadMore(event: InfiniteScrollCustomEvent) {
     this.todoList();

@@ -44,64 +44,7 @@
     <ion-row>
       @for (todo of todoList().slice().reverse(); track todo.id) {
       <ion-col size="4">
-        <ion-card class="ion-padding">
-          <ion-card-header class="ion-text-start">
-            <ion-card-subtitle>
-              {{ todo.completed ? 'Completed' : 'Pending' }}
-            </ion-card-subtitle>
-            <ion-card-title>{{ todo.title }}</ion-card-title>
-          </ion-card-header>
-
-          <ion-button fill="clear" [routerLink]="['/details', todo.id]"
-            >Details</ion-button
-          >
-          <ion-button fill="clear" (click)="getTodoDetails(todo.id)"
-            >Update</ion-button
-          >
-          <ion-modal [isOpen]="isModalOpen">
-            <ng-template>
-              <ion-card>
-                <ion-card-header>
-                  <ion-title>Update Todo</ion-title>
-                  <ion-button (click)="setOpen(false)">Close</ion-button>
-                </ion-card-header>
-                <ion-card-content>
-                  <form [formGroup]="todoForm">
-                    <ion-item>
-                      <ion-label position="floating">Title</ion-label>
-                      <ion-input
-                        class="ion-padding-top"
-                        formControlName="title"
-                        value="{{todoData?.title}}"
-                      ></ion-input>
-                    </ion-item>
-
-                    <ion-item>
-                      <ion-label position="floating">User ID</ion-label>
-                      <ion-input
-                        type="number"
-                        class="ion-padding-top"
-                        formControlName="userId"
-                        value="{{todoData?.userId}}"
-                      ></ion-input>
-                    </ion-item>
-
-                    <ion-button
-                      expand="full"
-                      (click)="updateTodo()"
-                      type="submit"
-                      [disabled]="todoForm.invalid"
-                      >Update</ion-button
-                    >
-                  </form>
-                </ion-card-content>
-              </ion-card>
-            </ng-template>
-          </ion-modal>
-          <ion-button fill="clear" (click)="deleteTodo(todo.id)"
-            >Delete</ion-button
-          >
-        </ion-card>
+        <app-todo-card [todo]="todo"></app-todo-card>
       </ion-col>
       }
       <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
